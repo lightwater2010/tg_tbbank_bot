@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            border: none;
+            width: 120px;
+            height: 60px;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            font-weight: bolder;
+            font-size: 1.1em;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            top: 100px;
+        }
+
+        .buttons:hover {
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        #skip_bt {
+            background-color: #4CAF50; /* Зеленый */
+        }
+
+        #skip_bt:active {
+            background-color: #45a049;
+        }
+
+        #exit_bt {
+            background-color: #f44336; /* Красный */
+        }
+
+        #exit_bt:active {
+            background-color: #e53935;
+        }
+
+        :root {
+            --alabaster: #FAFAFA;
+            --frostee: #EAF7EB;
+            --white: #FFF;
+        }
+
+        .card {
+            align-items: center;
+            border-radius: 0.25rem;
+            display: flex;
+            height: 20rem;
+            justify-content: center;
+            position: relative;
+            width: 35%;
+        }
+
+        /*.square-card {*/
+        /*  background-color: var(--frostee);*/
+        /*}*/
+
+        .square-card::before {
+            animation: shadow 1.6s ease-in-out infinite both;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            bottom: 2rem;
+            box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.2);
+            content: '';
+            height: 0.1rem;
+            left: 25%;
+            position: absolute;
+            right: 25%;
+        }
+
+        .down {
+            animation: down 1.6s ease-in infinite both;
+            bottom: 2rem;
+            position: absolute;
+        }
+
+        .down .up {
+            animation: up 1.6s ease-in-out infinite both;
+        }
+
+        .down .up .squeeze {
+            animation: squeeze 1.6s cubic-bezier(0.72, 0.03, 0.28, 0.97) infinite both;
+            transform-origin: 50% 100%;
+        }
+
+        .down .up .squeeze .rotate-in {
+            animation: rotate-in 1.6s ease-out infinite both;
+        }
+
+        .down .up .squeeze .rotate-in .rotate-out {
+            animation: rotate-out 1.6s ease-in infinite both;
+        }
+
+        .square {
+            background-color: var(--white);
+            height: 5rem;
+            width: 5rem;
+        }
+
+        @keyframes down {
+            0% {
+                transform: translateY(-10rem);
+            }
+            20%,
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes up {
+            0%,
+            75% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-10rem);
+            }
+        }
+
+        @keyframes squeeze {
+            0%,
+            4% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.8, 0.4);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rotate-in {
+            0% {
+                transform: rotate(-135deg);
+            }
+            20%,
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes rotate-out {
+            0%,
+            80% {
+                transform: rotate(0);
+            }
+            100% {
+                transform: rotate(135deg);
+            }
+        }
+
+        @keyframes shadow {
+            0%,
+            100% {
+                transform: scaleX(0.3);
+            }
+            45%,
+            50% {
+                transform: scaleX(0.8);
+            }
+        }
+
+        #card_with_queue {
+            background-color: rgb(18, 162, 234);
+            width: 350px;
+            height: 330px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            transition: 1.5s;
+            position: relative;
+            top: 100px;
+        }
+
+        #card_with_queue h1 {
+            position: absolute; /* Абсолютное позиционирование */
+            top: 50%; /* Сдвигаем на 50% сверху */
+            left: 50%; /* Сдвигаем на 50% слева */
+            transform: translate(-50%, -50%); /* Центрируем точно по середине */
+            backface-visibility: hidden;
+            color: white;
+            font-size: 2.3em;
+            text-align: center;
+            margin: 0; /* Убираем отступы */
+            padding: 0;
+        }
+
+        @keyframes flip {
+            0% {
+                transform: rotateX(0deg);
+            }
+            25% {
+                transform: rotateX(-180deg);
+            }
+            50% {
+                transform: rotateY(-180deg);
+            }
+            100% {
+                transform: rotateX(0deg);
+            }
+        }
+
+        .flip-animation {
+            animation: flip 1.6s ease-in-out;
+        }
+
+    </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+</head>
+<body>
+<div id="card_with_queue">
+    <h1>Вы 5 в очереди</h1>
+</div>
+
+<h2 id="time_text"
+    style="color: white; font-weight: bolder; word-break: break-all; word-wrap: break-word; white-space: normal; position: relative; top: 100px"></h2>
+<br>
+<h2 id="timer" style="text-align: center; color: white; font-weight: bolder; position: relative; top: 100px"></h2>
+
+<div class="buttons-container">
+    <button class="buttons" id="skip_bt">Пропустить</button>
+    <button class="buttons" id="exit_bt">Выйти</button>
+</div>
+
+
+<div class="card square-card">
+    <div class="down">
+        <div class="up">
+            <div class="squeeze">
+                <div class="rotate-in">
+                    <div class="rotate-out">
+                        <div class="square"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let card = document.getElementById("card_with_queue");
+    let text_of_card = card.querySelector('h1');
+
+
+    function flipCard(times, duration) {
+        let count = 0;
+
+        function animate() {
+            if (count < times) {
+                // Показываем текст перед началом анимации
+                text_of_card.innerText = 'Вы ' + (count + 1) + ' в очереди';
+                text_of_card.style.opacity = '1'; // Делаем текст видимым
+
+                // Запускаем анимацию переворота
+                card.classList.add('flip-animation');
+
+                // Через половину времени анимации скрываем текст
+                setTimeout(() => {
+                    text_of_card.style.opacity = '0'; // Скрываем текст
+                }, 200);
+
+                // После завершения анимации
+                setTimeout(() => {
+                    card.classList.remove('flip-animation'); // Убираем анимацию
+                    count++;
+
+                    // Показываем текст снова, если это не последний переворот
+                    if (count <= times) {
+                        text_of_card.innerText = 'Вы ' + (count + 1) + ' в очереди';
+                        text_of_card.style.opacity = '1'; // Делаем текст видимым
+                    }
+
+                    // Запускаем следующий переворот
+                    setTimeout(animate, 400); // Задержка между переворотами (0.5 секунды)
+                }, duration);
+            }
+        }
+
+        animate();
+    }
+
+    // Пример использования:
+    flipCard(5, 1600); // 5 переворотов, каждый длится 2 секунды
+
+
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'scale(1.1)';
+    })
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'scale(1)';
+    })
+
+
+    Telegram.WebApp.ready();
+    const initData = Telegram.WebApp.initData;
+
+
+    const params = new URLSearchParams(initData);
+    const user = JSON.parse(params.get('user'));
+
+    alert(initData);
+    document.getElementById("skip_bt").addEventListener('click', function () {
+        try {
+            if (Telegram.WebApp.UnsafeinitData) {
+                // Если initData это JSON
+                const receivedData = JSON.parse(Telegram.WebApp.initData);
+                const data = {
+                    event: "is_clicked_skip_bt",
+                    Queue: receivedData.queue
+                };
+
+                console.log("Данные отправлены:", data);
+                Telegram.WebApp.sendData(JSON.stringify(data));
+            } else {
+                console.error("Telegram.WebApp.initData пустой или отсутствует.");
+            }
+        } catch (error) {
+            console.error("Ошибка при разборе JSON:", error);
+        }
+    });
+
+    document.getElementById("exit_bt").addEventListener('click', function () {
+        try {
+            if (Telegram.WebApp.initData) {
+                // Если initData это JSON
+                const receivedData = JSON.parse(Telegram.WebApp.initData);
+                const data = {
+                    event: "is_clicked_exit_bt"
+                };
+                console.log("Данные отправлены:", data);
+                Telegram.WebApp.sendData(JSON.stringify(data));
+
+                Telegram.WebApp.close();
+            } else {
+                console.error("Telegram.WebApp.initData пустой или отсутствует.");
+            }
+        } catch (error) {
+            console.error("Ошибка при разборе JSON:", error);
+        }
+    });
+
+    // Функция для форматирования времени (добавляет ведущий ноль, если число меньше 10)
+    function formatTime(time) {
+        return time < 10 ? `0${time}` : time;
+    }
+
+    // Функция для обновления таймера
+    function startTimer(duration) {
+        const timerElement = document.getElementById('time_text');
+        const timer = document.getElementById('timer');
+
+        let minutes, seconds;
+
+        // Обновляем таймер каждую секунду
+        const interval = setInterval(() => {
+            minutes = Math.floor(duration / 60); // Получаем минуты
+            seconds = duration % 60; // Получаем секунды
+
+
+            timerElement.innerHTML = "Примерное время ожидания";
+            timer.innerText = `${formatTime(minutes)}:${formatTime(seconds)}`;
+
+            if (--duration <= 0) {
+                clearInterval(interval);
+                console.log("Время вышло!");
+                let body = document.querySelector('body');
+
+                body.innerHTML = `
+                        <h1 style="text-align: center">Пришло время вашего участия!</h1>
+                        <h2 style="text-align: center">Покажите qr code контролёру</h2>
+                        <img src="https://media.istockphoto.com/id/828088276/vector/qr-code-illustration.jpg?s=612x612&w=0&k=20&c=FnA7agr57XpFi081ZT5sEmxhLytMBlK4vzdQxt8A70M=" width="300px" height="300px">
+
+                    `
+
+
+            }
+        }, 1000);
+    }
+
+    const duration = 10;
+    startTimer(duration);
+</script>
+</body>
+</html>
+
+
